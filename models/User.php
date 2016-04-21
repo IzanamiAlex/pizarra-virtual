@@ -9,7 +9,9 @@ use Yii;
  *
  * @property integer $id
  * @property string $username
- * @property string $password
+ * @property string $password_hash
+ * @property string $auth_key
+ * @property string $access_token
  * @property string $type
  *
  * @property Student[] $students
@@ -31,9 +33,11 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'username', 'password', 'type'], 'required'],
+            [['id', 'username', 'password_hash', 'type'], 'required'],
             [['id'], 'integer'],
-            [['username', 'password', 'type'], 'string', 'max' => 45],
+            [['username', 'type'], 'string', 'max' => 45],
+            [['password_hash'], 'string', 'max' => 200],
+            [['auth_key', 'access_token'], 'string', 'max' => 150],
         ];
     }
 
@@ -45,7 +49,9 @@ class User extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'username' => Yii::t('app', 'Username'),
-            'password' => Yii::t('app', 'Password'),
+            'password_hash' => Yii::t('app', 'Password Hash'),
+            'auth_key' => Yii::t('app', 'Auth Key'),
+            'access_token' => Yii::t('app', 'Access Token'),
             'type' => Yii::t('app', 'Type'),
         ];
     }

@@ -30,7 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'username',
-            'password',
+            'password_hash',
+            'auth_key',
+            'access_token',
             'type',
         ],
     ]) ?>
