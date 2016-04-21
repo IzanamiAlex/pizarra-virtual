@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\StudentSearch */
+/* @var $searchModel app\models\FilesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Students');
+$this->title = Yii::t('app', 'Files');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="student-index">
+<div class="files-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Student'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create Files'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -25,13 +25,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'firstName',
-            'lastName',
-            'birthdate',
-            'gender',
-            // 'email:email',
-            // 'career',
-            // 'user_id',
+            'name',
+            'description',
+            'path',
+            'group_id',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
