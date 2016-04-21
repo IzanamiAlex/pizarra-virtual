@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Tutor;
+use app\models\Files;
 
 /**
- * TutorSearch represents the model behind the search form about `app\models\Tutor`.
+ * FilesSearch represents the model behind the search form about `app\models\Files`.
  */
-class TutorSearch extends Tutor
+class FilesSearch extends Files
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class TutorSearch extends Tutor
     public function rules()
     {
         return [
-            [['id', 'user_id'], 'integer'],
-            [['firstName', 'lastName', 'gender', 'area', 'email'], 'safe'],
+            [['id', 'group_id'], 'integer'],
+            [['name', 'description', 'path'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class TutorSearch extends Tutor
      */
     public function search($params)
     {
-        $query = Tutor::find();
+        $query = Files::find();
 
         // add conditions that should always apply here
 
@@ -60,14 +60,12 @@ class TutorSearch extends Tutor
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'group_id' => $this->group_id,
         ]);
 
-        $query->andFilterWhere(['like', 'firstName', $this->firstName])
-            ->andFilterWhere(['like', 'lastName', $this->lastName])
-            ->andFilterWhere(['like', 'gender', $this->gender])
-            ->andFilterWhere(['like', 'area', $this->area])
-            ->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'path', $this->path]);
 
         return $dataProvider;
     }
