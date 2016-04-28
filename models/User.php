@@ -14,8 +14,6 @@ use Yii;
  * @property string $access_token
  * @property string $type
  *
- * @property Student[] $students
- * @property Tutor[] $tutors
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -37,7 +35,10 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['username'], 'required'],
             [['password'], 'required', 'except' => ['update']],
             [['username'], 'string', 'max' => 128],
-      			[['password'], 'string', 'max' => 20]
+      			[['password'], 'string', 'max' => 20],
+            [['name'], 'string', 'max' => 40],
+            [['last_name'], 'string', 'max' => 40],
+            [['email'], 'string', 'max' => 40],
 
           //  [['id', 'username', 'password_hash', 'type'], 'required'],
           //  [['id'], 'integer'],
@@ -58,6 +59,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'password' => Yii::t('app', 'Password'),
             'auth_key' => Yii::t('app', 'Auth Key'),
             'access_token' => Yii::t('app', 'Access Token'),
+            'name' => Yii::t('app', 'Name'),
+            'last_name' => Yii::t('app', 'Last name'),
+            'email' => Yii::t('app', 'Email'),
             //'type' => Yii::t('app', 'Type'),
         ];
     }
@@ -155,21 +159,5 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         // return $this->password === $password;
 		return Yii::$app->getSecurity()->validatePassword($password,$this->password_hash);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStudents()
-    {
-        return $this->hasMany(Student::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTutors()
-    {
-        return $this->hasMany(Tutor::className(), ['user_id' => 'id']);
     }
 }
