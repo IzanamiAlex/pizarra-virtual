@@ -58,7 +58,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'password' => Yii::t('app', 'Password'),
             'auth_key' => Yii::t('app', 'Auth Key'),
             'access_token' => Yii::t('app', 'Access Token'),
-            'type' => Yii::t('app', 'Type'),
+            //'type' => Yii::t('app', 'Type'),
         ];
     }
 
