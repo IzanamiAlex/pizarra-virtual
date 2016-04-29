@@ -12,6 +12,8 @@ use Yii;
  * @property string $description
  * @property string $path
  * @property integer $group_id
+ * @property integer $show_all
+ * @property string $type
  *
  * @property Group $group
  */
@@ -31,11 +33,12 @@ class Files extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'group_id'], 'integer'],
+            [['name', 'path', 'show_all'], 'required'],
+            [['group_id', 'show_all'], 'integer'],
             [['name'], 'string', 'max' => 45],
             [['description'], 'string', 'max' => 400],
             [['path'], 'string', 'max' => 200],
+            [['type'], 'string', 'max' => 10],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],
         ];
     }
@@ -51,6 +54,8 @@ class Files extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Description'),
             'path' => Yii::t('app', 'Path'),
             'group_id' => Yii::t('app', 'Group ID'),
+            'show_all' => Yii::t('app', 'Show All'),
+            'type' => Yii::t('app', 'Type'),
         ];
     }
 
