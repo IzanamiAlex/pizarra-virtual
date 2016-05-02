@@ -44,7 +44,7 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'tutor_id' => Yii::t('app', 'Tutor ID'),
+            'tutor_id' => Yii::t('app', 'Tutor'),
             'name' => Yii::t('app', 'Name'),
         ];
     }
