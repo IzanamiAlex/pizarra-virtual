@@ -8,6 +8,9 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\helpers\Json;
+use yii\models\Group;
+use yii\models\Chat;
 
 class SiteController extends Controller
 {
@@ -49,7 +52,37 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        if (Yii::$app->request->post()) {
+
+        $message = Yii::$app->request->post('message');
+        
+        
+        $chat = new Group;
+        $chat->id = 1;
+        //$chat->tutor_id = 1;
+        //$chat->name = $message;
+        //$chat->insert();
+
+        //$name = Yii::$app->request->post('name');
+        
+
+        Yii::$app->redis->executeCommand('HSET',[
+        'key' => 'grupo1',
+            'field' => Yii::$app->user->identity->username,
+            'value' => $message
+        ]);
+
+        
+        return Yii::$app->redis->executeCommand('PUBLISH', [
+            'channel' => 'notification',
+            'message' => Json::encode(['name' => Yii::$app->user->identity->username, 'message' => $message])
+        ]);
+
+
+
+    }
+
+    return $this->render('index');
     }
 
     public function actionLogin()
