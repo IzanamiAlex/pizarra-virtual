@@ -41,7 +41,7 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -49,6 +49,12 @@ $config = [
             ],
         ],
 
+    ],
+    'modules' => [
+        'gridview'=>'kartik\grid\Module',
+        'rbac' =>  [
+            'class' => 'johnitvn\rbacplus\Module'
+        ]       
     ],
     'params' => $params,
 ];
