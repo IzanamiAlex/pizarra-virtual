@@ -58,16 +58,14 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `ajax`.`files`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ajax`.`files` ;
+DROP TABLE IF EXISTS `ajax`.`file` ;
 
-CREATE TABLE IF NOT EXISTS `ajax`.`files` (
+CREATE TABLE IF NOT EXISTS `ajax`.`file` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(400) NULL,
-  `path` VARCHAR(200) NOT NULL,
+  `file_name` VARCHAR(400) NULL,
   `group_id` INT NULL,
-  `show_all` INT NOT NULL,
-  `type` VARCHAR(10) NULL,
   PRIMARY KEY (`id`),
   INDEX `group_id_idx` (`group_id` ASC),
   CONSTRAINT `fk_files_group_id`
