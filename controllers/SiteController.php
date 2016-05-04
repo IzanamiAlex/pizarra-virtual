@@ -57,8 +57,8 @@ class SiteController extends Controller
         $message = Yii::$app->request->post('message');
         
         
-        $chat = new Group;
-        $chat->id = 1;
+        //$chat = new Group;
+        //$chat->id = 1;
         //$chat->tutor_id = 1;
         //$chat->name = $message;
         //$chat->insert();
