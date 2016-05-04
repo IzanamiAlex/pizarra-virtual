@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\Group;
+use kartik\file\FileInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\File */
@@ -24,7 +25,7 @@ use app\models\Group;
 	}
     
     function toggleGroupID() {
-        if( $("[name=\'File[group_file]\']:checked").val() == "0" )
+        if( $("[name=\'File[isGroupFile]\']:checked").val() == "0" )
 		{
 			hideGroupID();
 		}
@@ -34,7 +35,7 @@ use app\models\Group;
 		}
     }
     
-    $("[name=\'File[group_file]\']").change(function (){
+    $("[name=\'File[isGroupFile]\']").change(function (){
 		toggleGroupID();
 	});
     
@@ -52,9 +53,11 @@ use app\models\Group;
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'board_file')->fileInput() ?>
+    <?php // $form->field($model, 'board_file')->fileInput() ?>
 
-    <?= $form->field($model, 'group_file')->radioList(
+    <?= $form->field($model, 'board_file')->widget(FileInput::classname()) ?>
+   
+    <?= $form->field($model, 'isGroupFile')->radioList(
     [
         0 => 'Show all',
         1 => 'Show to group',
@@ -67,7 +70,7 @@ use app\models\Group;
             'name'
 		)
 	) ?>
-
+    
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
