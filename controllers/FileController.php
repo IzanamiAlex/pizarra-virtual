@@ -68,17 +68,11 @@ class FileController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $model->board_file = UploadedFile::getInstance($model, 'board_file');
 
-            $valid = true;
-            $valid = $valid && $model->validate();
-
-            if($valid)
+            if($model->validate())
             {
                 if($model->save())
                 {
-                    $isSaved = true;
-
-                    if($isSaved)
-                        return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         } 
@@ -94,12 +88,38 @@ class FileController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    /*public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }*/
+    
+    /**
+     * Updates an existing File model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->board_file = UploadedFile::getInstance($model, 'board_file');
+            
+            if($model->validate())
+            {
+                if($model->save())
+                {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
