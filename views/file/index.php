@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use kartik\grid\GridView;
+use app\models\FileSearch;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\FileSearch */
@@ -18,18 +19,42 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a(Yii::t('app', 'Create File'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
     <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            'description',
-            'group_id',
-
-            ['class' => 'yii\grid\ActionColumn'],
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'columns' => [
+        [
+            'class' => 'kartik\grid\ExpandRowColumn',
+            'value' => function ($model, $key, $index, $column) {
+                return GridView::ROW_COLLAPSED;
+            },
+            'detail' => function ($model, $key, $index, $column) {
+                return Yii::$app->controller->renderPartial('_detailview', [
+                    'model' => $model,
+                ]);
+            },
         ],
-    ]); ?>
+        
+        ['class' => 'yii\grid\SerialColumn'],
+
+        //'id',
+        'name',
+        'description',
+
+        /*
+        [
+            'attribute' => 'image',
+            'format' => 'html',    
+            'value' => function ($data) {
+                return Html::img(Yii::getAlias('@web').'/images/'. $data['image'],
+                ['width' => '70px']);
+            },
+        ],
+        */
+
+        ['class' => 'yii\grid\ActionColumn'],
+    ],
+]); ?>
+
 </div>

@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\Group;
 
 /**
  * This is the model class for table "file".
@@ -18,7 +19,7 @@ use Yii;
 class File extends \yii\db\ActiveRecord
 {
     public $board_file;
-    public $group_file = 0;
+    public $isGroupFile = 0;
     
     /**
      * @inheritdoc
@@ -41,7 +42,7 @@ class File extends \yii\db\ActiveRecord
             [['file_name'], 'string', 'max' => 200],
             [['board_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'pdf, png, jpg, jpeg, bmp, doc, docx'],
             [['group_id'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['group_id' => 'id']],
-            [['group_file'], 'boolean'],
+            [['isGroupFile'], 'boolean'],
         ];
     }
 
@@ -56,7 +57,7 @@ class File extends \yii\db\ActiveRecord
             'description' => Yii::t('app', 'Description'),
             'file_name' => Yii::t('app', 'File'),
             'board_file' => Yii::t('app', 'File'),
-            'group_file' => Yii::t('app', 'Visibility'),
+            'isGroupFile' => Yii::t('app', 'Visibility'),
             'group_id' => Yii::t('app', 'Group'),
         ];
     }
