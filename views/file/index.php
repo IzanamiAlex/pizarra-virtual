@@ -30,12 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 return GridView::ROW_COLLAPSED;
             },
             'detail' => function ($model, $key, $index, $column) {
-                $searchModel = new FileSearch(); 
-                $searchModel -> id = $model -> id;
-                $dataProvider = $searchModel -> search(Yii::$app->request->queryParams);
-
                 return Yii::$app->controller->renderPartial('_detailview', [
-                    'model' => $model
+                    'model' => $model,
                 ]);
             },
         ],

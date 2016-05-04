@@ -23,8 +23,24 @@ $this->title = $model->name;
             'value' => Html::a($model->file_name,'@web/files/files/'.$model->file_name),
             'format' => 'html',
         ],
-    ],
-]) ?>
+        ],
+    ]) ?>
+
+<?php 
+    $extension = pathInfo($model->file_name, PATHINFO_EXTENSION); 
+    
+    switch($extension) {
+        case 'bmp':
+        case 'jpeg':
+        case 'jpg':
+        case 'png':
+            echo '<h2>File Preview</h2>'; 
+            echo Html::img(Yii::getAlias('@web').'/files/files/'. $model->file_name);
+            break;
+        default:
+            break;
+    }
+?>
 
 <?php if(!empty($model->group)): ?>
 
