@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Tutor;
+use app\models\Group;
 
 /**
- * TutorSearch represents the model behind the search form about `app\models\Tutor`.
+ * GroupSearch represents the model behind the search form about `app\models\Group`.
  */
-class TutorSearch extends Tutor
+class GroupSearch extends Group
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class TutorSearch extends Tutor
     public function rules()
     {
         return [
-            [['id', 'user_id'], 'integer'],
-            [['firstName', 'lastName', 'gender', 'area', 'email'], 'safe'],
+            [['id', 'tutor_id'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class TutorSearch extends Tutor
      */
     public function search($params)
     {
-        $query = Tutor::find();
+        $query = Group::find();
 
         // add conditions that should always apply here
 
@@ -60,14 +60,10 @@ class TutorSearch extends Tutor
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'tutor_id' => $this->tutor_id,
         ]);
 
-        $query->andFilterWhere(['like', 'firstName', $this->firstName])
-            ->andFilterWhere(['like', 'lastName', $this->lastName])
-            ->andFilterWhere(['like', 'gender', $this->gender])
-            ->andFilterWhere(['like', 'area', $this->area])
-            ->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

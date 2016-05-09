@@ -14,6 +14,10 @@ use Yii;
  * @property string $gender
  * @property string $email
  * @property string $career
+ * @property integer $user_id
+ *
+ * @property Assign[] $assigns
+ * @property User $user
  */
 class Student extends \yii\db\ActiveRecord
 {
@@ -32,9 +36,10 @@ class Student extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'firstName', 'lastName', 'birthdate', 'gender', 'email', 'career'], 'required'],
-            [['id'], 'integer'],
+            [['id', 'user_id'], 'integer'],
             [['birthdate'], 'safe'],
-            [['firstName', 'lastName', 'gender', 'email', 'career'], 'string', 'max' => 45]
+            [['firstName', 'lastName', 'gender', 'email', 'career'], 'string', 'max' => 45],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -51,6 +56,23 @@ class Student extends \yii\db\ActiveRecord
             'gender' => Yii::t('app', 'Gender'),
             'email' => Yii::t('app', 'Email'),
             'career' => Yii::t('app', 'Career'),
+            'user_id' => Yii::t('app', 'User ID'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAssigns()
+    {
+        return $this->hasMany(Assign::className(), ['student_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }
