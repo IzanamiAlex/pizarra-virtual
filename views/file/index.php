@@ -21,40 +21,32 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= GridView::widget([
-    'dataProvider' => $dataProvider,
-    'filterModel' => $searchModel,
-    'columns' => [
-        [
-            'class' => 'kartik\grid\ExpandRowColumn',
-            'value' => function ($model, $key, $index, $column) {
-                return GridView::ROW_COLLAPSED;
-            },
-            'detail' => function ($model, $key, $index, $column) {
-                return Yii::$app->controller->renderPartial('_detailview', [
-                    'model' => $model,
-                ]);
-            },
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            [
+                'class' => 'kartik\grid\ExpandRowColumn',
+                'value' => function ($model, $key, $index, $column) {
+                    return GridView::ROW_COLLAPSED;
+                },
+                'detail' => function ($model, $key, $index, $column) {
+                    return Yii::$app->controller->renderPartial('_detailview', [
+                        'model' => $model,
+                    ]);
+                },
+            ],
+            //['class' => 'yii\grid\SerialColumn'],
+            'name',
+            'description',
+            [
+				'label' => 'Download Link',
+				'value' => function ($model) {
+                    return Html::a($model->name, '@web/files/files/' . $model->file_name);     
+                },
+				'format' => 'raw',
+			],
+            ['class' => 'yii\grid\ActionColumn'],
         ],
-        
-        ['class' => 'yii\grid\SerialColumn'],
-
-        //'id',
-        'name',
-        'description',
-
-        /*
-        [
-            'attribute' => 'image',
-            'format' => 'html',    
-            'value' => function ($data) {
-                return Html::img(Yii::getAlias('@web').'/images/'. $data['image'],
-                ['width' => '70px']);
-            },
-        ],
-        */
-
-        ['class' => 'yii\grid\ActionColumn'],
-    ],
-]); ?>
+    ]); ?>
 
 </div>
