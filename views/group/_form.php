@@ -86,11 +86,12 @@ use app\models\Group;
         )  ?>
 
          <!--<?= $form->field($model, 'id')->textInput() ?> -->
-
         
 
         <div class="form-group">
-            
+            <p>
+                <?= Html::a(Yii::t('app', 'Add student'), ['', 'id' => $model->id], ['class' => 'btn btn-success']) ?>
+            </p>
         </div>
 
         <?php ActiveForm::end(); ?> 
