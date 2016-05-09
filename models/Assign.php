@@ -5,8 +5,9 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "assign".
+ * This is the model class for table "{{%assign}}".
  *
+ * @property integer $id_assign
  * @property integer $student_id
  * @property integer $group_id
  *
@@ -20,7 +21,7 @@ class Assign extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'assign';
+        return '{{%assign}}';
     }
 
     /**
@@ -41,6 +42,7 @@ class Assign extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id_assign' => 'Id Assign',
             'student_id' => 'Student ID',
             'group_id' => 'Group ID',
         ];
@@ -61,4 +63,5 @@ class Assign extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'student_id']);
     }
+    
 }
