@@ -74,7 +74,6 @@ class File extends \yii\db\ActiveRecord
 	{
 		if(parent::beforeSave($insert))
 		{
-			// FILE
 			$fileName = uniqid() . '.' . $this->board_file->extension;
 			$this->board_file->saveAs('files/files/' . $fileName);
 			$this->file_name = $fileName;

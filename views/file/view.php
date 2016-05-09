@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'description',
             [
 				'label' => 'File',
-				'value' => Html::a($model->file_name,'@web/files/files/'.$model->file_name),
+				'value' => Html::a($model->file_name, '@web/files/files/' . $model->file_name),
 				'format' => 'html',
 			],
             'group_id',
