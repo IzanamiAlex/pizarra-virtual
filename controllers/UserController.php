@@ -66,6 +66,13 @@ class UserController extends Controller
         $model = new User();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //Lines for add the role
+            $role = $model->role;
+            $auth = Yii::$app->authManager;
+            echo $role;
+            die();
+            $userRole = $auth->getRole('admin');
+            $auth->assign($userRole, $model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [

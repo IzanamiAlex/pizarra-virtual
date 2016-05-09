@@ -18,7 +18,7 @@ use Yii;
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     public $password;
-    
+    public $role;
     /**
      * @inheritdoc
      */
@@ -63,6 +63,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'name' => Yii::t('app', 'Name'),
             'last_name' => Yii::t('app', 'Last name'),
             'email' => Yii::t('app', 'Email'),
+            'role'=> Yii::t('app', 'Role'),
             //'type' => Yii::t('app', 'Type'),
         ];
     }
@@ -91,6 +92,16 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             return true;
         }
         return false;
+    }
+
+    public function afterSave($insert)
+    {
+      if ($this->isNewRecord) {
+        // the following three lines were added:
+        $auth = Yii::$app->authManager;
+        $authorRole = $auth->getRole($role);
+        $auth->assign($authorRole, $user->getId());
+      }
     }
 
     /**
