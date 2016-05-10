@@ -10,6 +10,13 @@ use app\models\AuthItem;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<?php
+    $roles = (new \yii\db\Query())
+        ->select(['name'])
+        ->from(['auth_item'])
+        ->all();
+?>
+
 <div class="user-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -23,6 +30,16 @@ use app\models\AuthItem;
 	<?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
 
 	<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    
+    <?= $form->field($model, 'roleName')->dropDownList(
+		ArrayHelper::map(
+			$roles,
+            'name',
+            function($roles, $defaultValue) {
+                return $roles['name'];
+            }
+		)
+	) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

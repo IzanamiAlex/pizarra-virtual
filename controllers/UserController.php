@@ -8,6 +8,7 @@ use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\rbac\DbManager;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -64,8 +65,9 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->authManager->assign($model->role, $model->id);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [

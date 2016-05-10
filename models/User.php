@@ -18,6 +18,8 @@ use Yii;
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     public $password;
+    public $role;
+    public $roleName;
     
     /**
      * @inheritdoc
@@ -37,6 +39,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['password'], 'required', 'except' => ['update']],
             [['username'], 'string', 'max' => 128],
             [['password'], 'string', 'max' => 20],
+            [['roleName'], 'string', 'max' => 20],
             [['name'], 'string', 'max' => 40],
             [['last_name'], 'string', 'max' => 40],
             [['email'], 'string', 'max' => 40],
@@ -63,6 +66,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'name' => Yii::t('app', 'Name'),
             'last_name' => Yii::t('app', 'Last name'),
             'email' => Yii::t('app', 'Email'),
+            'roleName' => Yii::t('app', 'Role'),
             //'type' => Yii::t('app', 'Type'),
         ];
     }
@@ -73,6 +77,8 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function beforeSave($insert)
     {
+        $this->role = Yii::$app->authManager->getRole($this->roleName);
+        
         if(parent::beforeSave($insert))
         {
             if($this->isNewRecord)
@@ -132,6 +138,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getId()
     {
         return $this->id;
+    }
+    
+    public function getRole()
+    {
+        return $this->role;
     }
 
     /**
