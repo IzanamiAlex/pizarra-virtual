@@ -4,10 +4,12 @@ namespace app\controllers;
 
 use Yii;
 use app\models\User;
+use app\models\Assign;
 use app\models\UserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\rbac\DbManager;
 
 /**
  * UserController implements the CRUD actions for User model.
@@ -63,13 +65,38 @@ class UserController extends Controller
      */
     public function actionCreate()
     {
-        $model = new User();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $user = new User();
+        $assign = new Assign();
+        
+        if ($user->load(Yii::$app->request->post())) {
+            $valid = true;
+            $valid = $valid && $user->validate();
+            
+            if (strcmp("Student", $user->roleName) == 0) {
+                if ($assign->load(Yii::$app->request->post())) {
+                    $valid = $valid && $assign->validate();
+                }
+            }
+            
+            if ($valid) {
+                if ($user->save()) {
+                    Yii::$app->authManager->assign($user->role, $user->id);
+                    $isSaved = true;
+                    
+                    if (strcmp("Student", $user->roleName) == 0) {
+                        $assign->student_id = $user->id;
+                        $isSaved = $isSaved && $assign->save();
+                    }
+                    
+                    if($isSaved) {
+                        return $this->redirect(['view', 'id' => $user->id]);
+                    }
+                }
+            }
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'user' => $user,
+                'assign' => $assign,
             ]);
         }
     }
@@ -82,13 +109,15 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $user = $this->findModel($id);
+        $assign = (empty($user->assign))? new Assign() : $user->assign;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($user->load(Yii::$app->request->post()) && $user->save()) {
+            return $this->redirect(['view', 'id' => $user->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'user' => $user,
+                'assign' => $assign,
             ]);
         }
     }

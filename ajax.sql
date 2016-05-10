@@ -82,8 +82,10 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `ajax`.`assign` ;
 
 CREATE TABLE IF NOT EXISTS `ajax`.`assign` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `student_id` INT NULL,
   `group_id` INT NULL,
+  PRIMARY KEY (`id`),
   INDEX `group_id_idx` (`group_id` ASC),
   INDEX `fk_student_id_idx` (`student_id` ASC),
   CONSTRAINT `fk_student_id`

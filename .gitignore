@@ -28,3 +28,4 @@ phpunit.phar
 
 #dir with the files upload
 /web/files/files
+sh.exe.stackdump
