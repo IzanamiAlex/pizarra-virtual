@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\AuthItem;
 
@@ -23,7 +23,33 @@ use app\models\AuthItem;
 ?>
 
 <?php $this->registerJs('
+    function showGroupID()
+	{
+		$("[name=\'Assign[group_id]\']").removeAttr("disabled");
+		$(".field-assign-group_id").show();
+	}
     
+    function hideGroupID()
+	{
+		$("[name=\'Assign[group_id]\']").attr("disabled","disabled");
+		$(".field-assign-group_id").hide();
+	}
+    
+    function toggleGroupID() {
+        var roleName = $("[name=\'User[roleName]\']:checked").val();
+        
+        if (roleName == "Student") {
+            showGroupID();
+        } else {
+			hideGroupID();
+		}
+    }
+    
+    $("[name=\'User[roleName]\']").change(function (){
+		toggleGroupID();
+	});
+    
+    toggleGroupID();
 '); ?>
 
 <div class="user-form">

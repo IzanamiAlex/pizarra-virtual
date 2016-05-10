@@ -44,6 +44,7 @@ class Assign extends \yii\db\ActiveRecord
         return [
             'id' => Yii::t('app', 'ID'),
             'student_id' => Yii::t('app', 'Student ID'),
+            'group_id' => Yii::t('app', 'Group'),
         ];
     }
 
