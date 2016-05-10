@@ -15,23 +15,32 @@ use app\models\AuthItem;
         ->select(['name'])
         ->from(['auth_item'])
         ->all();
+
+    $groups = (new \yii\db\Query())
+        ->select(['id', 'name'])
+        ->from(['group'])
+        ->all();
 ?>
+
+<?php $this->registerJs('
+    
+'); ?>
 
 <div class="user-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($user, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+    <?= $form->field($user, 'password')->passwordInput(['maxlength' => true]) ?>
 
-	<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($user, 'name')->textInput(['maxlength' => true]) ?>
 
-	<?= $form->field($model, 'last_name')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($user, 'last_name')->textInput(['maxlength' => true]) ?>
 
-	<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+	<?= $form->field($user, 'email')->textInput(['maxlength' => true]) ?>
     
-    <?= $form->field($model, 'roleName')->dropDownList(
+    <?= $form->field($user, 'roleName')->radioList(
 		ArrayHelper::map(
 			$roles,
             'name',
@@ -40,9 +49,19 @@ use app\models\AuthItem;
             }
 		)
 	) ?>
+   
+   <?= $form->field($assign, 'group_id')->dropDownList(
+        ArrayHelper::map(
+			$groups,
+            'id',
+            function($groups, $defaultValue) {
+                return $groups['name'];
+            }
+		)
+    ) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($user->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $user->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

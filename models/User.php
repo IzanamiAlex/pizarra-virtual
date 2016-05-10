@@ -35,7 +35,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username'], 'required'],
+            [['username', 'roleName'], 'required'],
             [['password'], 'required', 'except' => ['update']],
             [['username'], 'string', 'max' => 128],
             [['password'], 'string', 'max' => 20],
@@ -140,9 +140,12 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         return $this->id;
     }
     
-    public function getRole()
+    /**
+     * @inheritdoc
+     */
+    public function getAssign()
     {
-        return $this->role;
+        return $this->hasOne(Assign::className(), ['student_id' => 'id']);
     }
 
     /**
