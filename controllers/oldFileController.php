@@ -3,16 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Student;
-use app\models\StudentSearch;
+use app\models\File;
+use app\models\FileSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 use yii\filters\VerbFilter;
 
 /**
- * StudentController implements the CRUD actions for Student model.
+ * FileController implements the CRUD actions for File model.
  */
-class StudentController extends Controller
+class FileController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,12 +31,12 @@ class StudentController extends Controller
     }
 
     /**
-     * Lists all Student models.
+     * Lists all File models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new StudentSearch();
+        $searchModel = new FileSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,7 +46,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Displays a single Student model.
+     * Displays a single File model.
      * @param integer $id
      * @return mixed
      */
@@ -57,25 +58,38 @@ class StudentController extends Controller
     }
 
     /**
-     * Creates a new Student model.
+     * Creates a new File model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Student();
+        $model = new File();
+        if ($model->load(Yii::$app->request->post())) {
+            $model->board_file = UploadedFile::getInstance($model, 'board_file');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+            $valid = true;
+            $valid = $valid && $model->validate();
+
+            if($valid)
+            {
+                if($model->save())
+                {
+                    $isSaved = true;
+
+                    if($isSaved)
+                        return $this->redirect(['view', 'id' => $model->id]);
+                }
+            }
+        } 
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Updates an existing Student model.
+     * Updates an existing File model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,7 +108,7 @@ class StudentController extends Controller
     }
 
     /**
-     * Deletes an existing Student model.
+     * Deletes an existing File model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +121,15 @@ class StudentController extends Controller
     }
 
     /**
-     * Finds the Student model based on its primary key value.
+     * Finds the File model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Student the loaded model
+     * @return File the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Student::findOne($id)) !== null) {
+        if (($model = File::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

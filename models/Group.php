@@ -13,7 +13,7 @@ use Yii;
  *
  * @property Assign[] $assigns
  * @property Files[] $files
- * @property Tutor $tutor
+ * @property User $tutor
  */
 class Group extends \yii\db\ActiveRecord
 {
@@ -31,10 +31,9 @@ class Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'tutor_id'], 'integer'],
+            [['tutor_id'], 'integer'],
             [['name'], 'string', 'max' => 45],
-            [['tutor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tutor::className(), 'targetAttribute' => ['tutor_id' => 'id']],
+            [['tutor_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['tutor_id' => 'id']],
         ];
     }
 
@@ -45,7 +44,7 @@ class Group extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'tutor_id' => Yii::t('app', 'Tutor ID'),
+            'tutor_id' => Yii::t('app', 'Tutor'),
             'name' => Yii::t('app', 'Name'),
         ];
     }
@@ -71,6 +70,6 @@ class Group extends \yii\db\ActiveRecord
      */
     public function getTutor()
     {
-        return $this->hasOne(Tutor::className(), ['id' => 'tutor_id']);
+        return $this->hasOne(User::className(), ['id' => 'tutor_id']);
     }
 }

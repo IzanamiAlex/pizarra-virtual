@@ -14,12 +14,13 @@ use Yii;
  * @property string $access_token
  * @property string $type
  *
- * @property Student[] $students
- * @property Tutor[] $tutors
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
-  public $password;
+    public $password;
+    public $role;
+    public $roleName;
+    
     /**
      * @inheritdoc
      */
@@ -34,16 +35,20 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username'], 'required'],
+            [['username', 'roleName'], 'required'],
             [['password'], 'required', 'except' => ['update']],
             [['username'], 'string', 'max' => 128],
-      			[['password'], 'string', 'max' => 20]
+            [['password'], 'string', 'max' => 20],
+            [['roleName'], 'string', 'max' => 20],
+            [['name'], 'string', 'max' => 40],
+            [['last_name'], 'string', 'max' => 40],
+            [['email'], 'string', 'max' => 40],
 
-          //  [['id', 'username', 'password_hash', 'type'], 'required'],
-          //  [['id'], 'integer'],
-          //  [['username', 'type'], 'string', 'max' => 45],
-          //  [['password_hash'], 'string', 'max' => 200],
-          //  [['auth_key', 'access_token'], 'string', 'max' => 150],
+            //  [['id', 'username', 'password_hash', 'type'], 'required'],
+            //  [['id'], 'integer'],
+            //  [['username', 'type'], 'string', 'max' => 45],
+            //  [['password_hash'], 'string', 'max' => 200],
+            //  [['auth_key', 'access_token'], 'string', 'max' => 150],
         ];
     }
 
@@ -58,7 +63,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'password' => Yii::t('app', 'Password'),
             'auth_key' => Yii::t('app', 'Auth Key'),
             'access_token' => Yii::t('app', 'Access Token'),
-            'type' => Yii::t('app', 'Type'),
+            'name' => Yii::t('app', 'Name'),
+            'last_name' => Yii::t('app', 'Last name'),
+            'email' => Yii::t('app', 'Email'),
+            'roleName' => Yii::t('app', 'Role'),
+            //'type' => Yii::t('app', 'Type'),
         ];
     }
 
@@ -67,33 +76,35 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      * -Convert the password in to password_hash and add the auth_key and the Token.
      */
     public function beforeSave($insert)
-  	{
-  		if(parent::beforeSave($insert))
-  		{
-  			if($this->isNewRecord)
-  			{
-  				$this->password_hash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
-  				$this->auth_key = Yii::$app->getSecurity()->generateRandomString();
-  				$this->access_token = Yii::$app->getSecurity()->generateRandomString();
-  			}
-  			else
-  			{
-  				if( !empty($this->password) )
-  				{
-  					$this->password_hash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
-  				}
-  			}
-  			return true;
-  		}
-  		return false;
-  	}
+    {
+        $this->role = Yii::$app->authManager->getRole($this->roleName);
+        
+        if(parent::beforeSave($insert))
+        {
+            if($this->isNewRecord)
+            {
+                $this->password_hash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+                $this->auth_key = Yii::$app->getSecurity()->generateRandomString();
+                $this->access_token = Yii::$app->getSecurity()->generateRandomString();
+            }
+            else
+            {
+                if( !empty($this->password) )
+                {
+                    $this->password_hash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 
     /**
        * @inheritdoc
        */
     public static function findIdentity($id)
     {
-      return self::findOne($id);
+        return self::findOne($id);
     }
 
     /**
@@ -101,13 +112,13 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
        */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-      foreach (self::$users as $user) {
-          if ($user['accessToken'] === $token) {
-              return new static($user);
-          }
-      }
+        foreach (self::$users as $user) {
+            if ($user['accessToken'] === $token) {
+                return new static($user);
+            }
+        }
 
-      return null;
+        return null;
     }
 
     /**
@@ -127,6 +138,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function getId()
     {
         return $this->id;
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getAssign()
+    {
+        return $this->hasOne(Assign::className(), ['student_id' => 'id']);
     }
 
     /**
@@ -154,22 +173,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         // return $this->password === $password;
-		return Yii::$app->getSecurity()->validatePassword($password,$this->password_hash);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getStudents()
-    {
-        return $this->hasMany(Student::className(), ['user_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTutors()
-    {
-        return $this->hasMany(Tutor::className(), ['user_id' => 'id']);
+        return Yii::$app->getSecurity()->validatePassword($password,$this->password_hash);
     }
 }

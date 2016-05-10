@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Files;
+use app\models\File;
 
 /**
- * FilesSearch represents the model behind the search form about `app\models\Files`.
+ * FileSearch represents the model behind the search form about `app\models\File`.
  */
-class FilesSearch extends Files
+class FileSearch extends File
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class FilesSearch extends Files
     {
         return [
             [['id', 'group_id'], 'integer'],
-            [['name', 'description', 'path'], 'safe'],
+            [['name', 'description', 'file'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class FilesSearch extends Files
      */
     public function search($params)
     {
-        $query = Files::find();
+        $query = File::find();
 
         // add conditions that should always apply here
 
@@ -65,7 +65,7 @@ class FilesSearch extends Files
 
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'path', $this->path]);
+            ->andFilterWhere(['like', 'file', $this->file]);
 
         return $dataProvider;
     }
