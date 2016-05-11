@@ -5,17 +5,10 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log','simplechat'],
+    'bootstrap' => ['log'],
     'components' => [
-            'mongodb' => [
-            'class' => '\yii\mongodb\Connection',
-            'dsn' => 'mongodb://Josafat:futbol@localhost:27017/admin',
-        ],
-    'redis' => [
-            'class' => 'yii\redis\Connection',
-            'hostname' => 'localhost',
-            'port' => 6379,
-            'database' => 0,
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -48,29 +41,21 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
-        
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-
+        'formatter' => [
+            'nullDisplay' => '',  
+        ],
     ],
-
     'modules' => [
-        // ...
-        'simplechat' => [
-            'class' => 'bubasuma\simplechat\Module',
-        ],
-        'gii1' => [
-            'class' => 'yii\gii\Module',
-            'generators' => [
-                'mongoDbModel' => [
-                    'class' => 'yii\mongodb\gii\model\Generator'
-                ]
-            ],
-        ],
+        'gridview'=>'kartik\grid\Module',
+        'rbac' =>  [
+            'class' => 'johnitvn\rbacplus\Module'
+        ]       
     ],
     'params' => $params,
 ];

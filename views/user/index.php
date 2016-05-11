@@ -2,12 +2,12 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Users';
+$this->title = Yii::t('app', 'Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
@@ -16,9 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Create User'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-    <?= GridView::widget([
+<?php Pjax::begin(); ?>    <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -26,14 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'username',
-            'password_hash',
-            'auth_key',
-            'access_token',
-            // 'name',
-            // 'last_name',
-            // 'email:email',
+            'name',
+            'last_name',
+            //'password_hash',
+            //'password_hash',
+            //'auth_key',
+            //'access_token',
+            // 'type',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-</div>
+<?php Pjax::end(); ?></div>

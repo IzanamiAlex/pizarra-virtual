@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\FilesSearch */
+/* @var $model app\models\FileSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="files-search">
+<div class="file-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description') ?>
 
-    <?= $form->field($model, 'path') ?>
+    <?= $form->field($model, 'file') ?>
 
     <?= $form->field($model, 'group_id') ?>
 
