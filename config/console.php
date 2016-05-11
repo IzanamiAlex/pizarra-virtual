@@ -8,7 +8,13 @@ $db = require(__DIR__ . '/db.php');
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','simplechat'],
+    'modules' => [
+        'simplechat' => [
+            'class' => 'bubasuma\simplechat\Module',
+        ],
+        // ...
+    ],
     'controllerNamespace' => 'app\commands',
     'components' => [
         'cache' => [
@@ -24,6 +30,7 @@ $config = [
         ],
         'db' => $db,
     ],
+    
     'params' => $params,
     /*
     'controllerMap' => [
@@ -40,6 +47,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
     ];
+    
 }
 
 return $config;

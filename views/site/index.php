@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 
-$this->title = 'My Yii Application';
+$this->title = 'Pizarra Virtual';
 
 $js = <<<JS
 $('#chat-form').submit(function() {
 
      var form = $(this);
-
+       
      $.ajax({
           url: form.attr('action'),
           type: 'post',
@@ -45,7 +45,6 @@ $this->registerJs($js, \yii\web\View::POS_READY)
                                 <h3 class="panel-title">Chat</h3>
                             </div>
                             <div class="panel-body">
-                              
                                 <?= Html::beginForm(['/site/index'], 'POST', [
                     'id' => 'chat-form'
                 ]) ?>

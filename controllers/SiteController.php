@@ -55,8 +55,10 @@ class SiteController extends Controller
         if (Yii::$app->request->post()) {
 
         $message = Yii::$app->request->post('message');
-        
-        
+        $idUser = Yii::$app->user->id;
+        $grupo = \app\models\Group::find(
+
+        );
         //$chat = new Group;
         //$chat->id = 1;
         //$chat->tutor_id = 1;
@@ -66,17 +68,21 @@ class SiteController extends Controller
         //$name = Yii::$app->request->post('name');
         
 
-        Yii::$app->redis->executeCommand('HSET',[
+        /*Yii::$app->redis->executeCommand('HSET',[
         'key' => 'grupo1',
             'field' => Yii::$app->user->identity->username,
             'value' => $message
-        ]);
+        ]);*/
 
-        
-        return Yii::$app->redis->executeCommand('PUBLISH', [
+
+        /*return Yii::$app->redis->executeCommand('PUBLISH', [
             'channel' => 'notification',
-            'message' => Json::encode(['name' => Yii::$app->user->identity->username, 'message' => $message])
-        ]);
+            //'message' => Json::encode(['name' => Yii::$app->user->identity->username, 'message' => $message])
+            'message' => Json::encode(['name' => 'Josafat', 'message' => $message,'grupo' => $grupo])
+        ]);*/
+        
+
+        echo Json::encode(['name' => 'Josafat', 'message' => $message]);
 
 
 

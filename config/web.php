@@ -5,8 +5,12 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log','simplechat'],
     'components' => [
+            'mongodb' => [
+            'class' => '\yii\mongodb\Connection',
+            'dsn' => 'mongodb://Josafat:futbol@localhost:27017/admin',
+        ],
     'redis' => [
             'class' => 'yii\redis\Connection',
             'hostname' => 'localhost',
@@ -52,6 +56,21 @@ $config = [
             ],
         ],
 
+    ],
+
+    'modules' => [
+        // ...
+        'simplechat' => [
+            'class' => 'bubasuma\simplechat\Module',
+        ],
+        'gii1' => [
+            'class' => 'yii\gii\Module',
+            'generators' => [
+                'mongoDbModel' => [
+                    'class' => 'yii\mongodb\gii\model\Generator'
+                ]
+            ],
+        ],
     ],
     'params' => $params,
 ];
