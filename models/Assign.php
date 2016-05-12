@@ -19,7 +19,7 @@ class Assign extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName()   
     {
         return 'assign';
     }
