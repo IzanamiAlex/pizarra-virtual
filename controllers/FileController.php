@@ -27,6 +27,26 @@ class FileController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'update'],
+                        'roles' => ['Administrator', 'Tutor'],
+                    ],
+                    [
+						'allow' => true,
+						'actions' => ['delete'],
+						'roles' => ['Administrator', 'Tutor'],
+					],
+                    [
+                        'allow' => true,
+						'actions' => ['index','view'],
+						'roles' => ['@'],
+                    ],
+                ],
+            ],
         ];
     }
 
