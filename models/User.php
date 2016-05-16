@@ -149,6 +149,21 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
+     * Returns user's role as a string
+     */
+    public function getRole()
+    {
+        $role = (new \yii\db\Query())
+                ->select(['item_name'])
+                ->select(['item_name'])
+                ->from(['auth_assignment'])
+                ->where(['user_id' => $this->id])
+                ->one();
+
+        return $role['item_name'];
+    }
+    
+    /**
      * @inheritdoc
      */
     public function getAuthKey()
