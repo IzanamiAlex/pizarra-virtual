@@ -68,10 +68,10 @@ class UserController extends Controller
         $user = new User();
         $assign = new Assign();
         
-        if ($user->load(Yii::$app->request->post())) {
+        if ($user->load(Yii::$app->request->post()) && $user->save()) {
             $valid = true;
             $valid = $valid && $user->validate();
-            
+            //return $this->redirect(['view', 'id' => $user->id]);
             if (strcmp("Student", $user->roleName) == 0) {
                 if ($assign->load(Yii::$app->request->post())) {
                     $valid = $valid && $assign->validate();

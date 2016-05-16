@@ -9,8 +9,9 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use yii\helpers\Json;
-use yii\models\Group;
-use yii\models\Chat;
+use app\models\Chat;
+use app\models\Assign;
+use app\models\Group;
 
 class SiteController extends Controller
 {
@@ -52,43 +53,85 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+
+        $idGroup = '';
+
+        $idUser = Yii::$app->user->id;
+        $idGroupAux = Assign::find()
+            ->where(['student_id' => $idUser])
+            ->asArray()
+            ->one();
+
+        $idGroupTutor = Group::find()
+            ->where(['tutor_id' => $idUser])
+            ->asArray()
+            ->one();
+
+        if(!empty($idGroupTutor)){
+            $idGroup = $idGroupTutor['name'];
+            //echo json_encode($idGroup);
+        }else{
+            if(!empty($idGroupAux)){
+                $nameGroup = Group::find()
+                    ->where(['id' => $idGroupAux['group_id']])
+                    ->asArray()
+                    ->one();
+                $idGroup = $nameGroup['name'];
+            }
+
+        }
+        
+
+
         if (Yii::$app->request->post()) {
 
-        $message = Yii::$app->request->post('message');
-        $idUser = Yii::$app->user->id;
-        $grupo = \app\models\Group::find(
+            $message = Yii::$app->request->post('message');
+            $chat = new Chat;
+            $chat->username = Yii::$app->user->identity->username;
+            $chat->message = $message;
+            $chat->group = $idGroup;
+            $chat->save();
+            Yii::$app->redis->executeCommand('BGSAVE');
 
-        );
+        //$grupo = \app\models\Group::find();
         //$chat = new Group;
         //$chat->id = 1;
         //$chat->tutor_id = 1;
         //$chat->name = $message;
         //$chat->insert();
-
         //$name = Yii::$app->request->post('name');
-        
 
         /*Yii::$app->redis->executeCommand('HSET',[
         'key' => 'grupo1',
             'field' => Yii::$app->user->identity->username,
             'value' => $message
         ]);*/
+        return Yii::$app->redis->executeCommand('PUBLISH', [
+            'channel' => $idGroup,
+            'message' => Json::encode(['name' => Yii::$app->user->identity->username, 'message' => $message])
+            //'message' => Json::encode(['name' => 'Josafat', 'message' => $message,'grupo' => $grupo])
+        ]);
+
+        //echo Json::encode(['name' => 'Josafat', 'message' => $message]);
+    }else{
 
 
-        /*return Yii::$app->redis->executeCommand('PUBLISH', [
-            'channel' => 'notification',
-            //'message' => Json::encode(['name' => Yii::$app->user->identity->username, 'message' => $message])
-            'message' => Json::encode(['name' => 'Josafat', 'message' => $message,'grupo' => $grupo])
-        ]);*/
-        
+            $aux = Chat::find()
+                ->where(['group' => $idGroup])
+                ->asArray()
+                ->all();
+            $int = sizeof($aux);
+            $intOff = $int - 5;
 
-        echo Json::encode(['name' => 'Josafat', 'message' => $message]);
+            $mensajes = Chat::find()
+                ->where(['group' => $idGroup])
+                ->offset($intOff)
+                ->asArray()
+                ->all();
+            return $this->render('index',['mensajes'=> $mensajes,'grupo'=> $idGroup]);
+        }
+    //echo $idGroup;
 
-
-
-    }
-
-    return $this->render('index');
     }
 
     public function actionLogin()

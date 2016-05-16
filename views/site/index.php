@@ -7,6 +7,10 @@ use yii\helpers\Html;
 $this->title = 'Pizarra Virtual';
 
 $js = <<<JS
+
+
+
+
 $('#chat-form').submit(function() {
 
      var form = $(this);
@@ -29,6 +33,9 @@ $this->registerJs($js, \yii\web\View::POS_READY)
 
     <div class="body-content">
 
+        <?php
+        echo"<input id='grupo' type='text' hidden value='".$grupo."'>";
+        ?>
 
     <div class="row">
         <div class="col-md-8">
@@ -38,7 +45,16 @@ $this->registerJs($js, \yii\web\View::POS_READY)
                 
         </div>
         <div class="col-md-4">
-                <div id="notifications" ></div>
+                <div id="notifications" style="width:auto; height: 240px; overflow: scroll">
+                    <?php
+                    foreach ($mensajes as $mensaje){
+                        echo "<p><strong>".$mensaje['username']."</strong>: ".$mensaje['message']."</p>";
+                    }
+                    ?>
+                    
+
+                    
+                </div>
                 
         <div class="panel panel-default">
                             <div class="panel-heading">

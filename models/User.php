@@ -77,6 +77,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function beforeSave($insert)
     {
+
         $this->role = Yii::$app->authManager->getRole($this->roleName);
         
         if(parent::beforeSave($insert))
@@ -86,6 +87,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
                 $this->password_hash = Yii::$app->getSecurity()->generatePasswordHash($this->password);
                 $this->auth_key = Yii::$app->getSecurity()->generateRandomString();
                 $this->access_token = Yii::$app->getSecurity()->generateRandomString();
+                
             }
             else
             {
