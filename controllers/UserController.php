@@ -28,6 +28,26 @@ class UserController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => 'yii\filters\AccessControl',
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['create', 'update'],
+                        'roles' => ['Administrator'],
+                    ],
+                    [
+						'allow' => true,
+						'actions' => ['delete'],
+						'roles' => ['Administrator'],
+					],
+                    [
+                        'allow' => true,
+						'actions' => ['index','view'],
+						'roles' => ['@'],
+                    ],
+                ],
+            ],
         ];
     }
 

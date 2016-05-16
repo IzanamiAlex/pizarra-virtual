@@ -19,7 +19,6 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
-    <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
     <?php $this->head() ?>
 </head>
 <body>
@@ -28,32 +27,54 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'Virtual Board',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Pizarra Virtual', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
+
+    if (Yii::$app->user->isGuest) {
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'encodeLabels' => false,
+            'items' => [
+                ['label' => '<span class="glyphicon glyphicon-off"></span> Login', 'url' => ['/site/login']],
+            ]
+        ]);
+    } else {
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav navbar-right'],
+            'encodeLabels' => false,
+            'items' => [
+                [
+                    'label' => '<span class="glyphicon glyphicon-home"></span> Home', 
+                    'url' => ['/site/index'],
+                ],
+                [
+                    'label' => '<span class="glyphicon glyphicon-user"></span> Users', 
+                    'url' => ['/user/index'],
+                    'visible' => !Yii::$app->user->identity->isStudent(),
+                ],
+                [
+                    'label' => '<span class="glyphicon glyphicon-education"></span> Groups', 
+                    'url' => ['/group/index'],
+                    'visible' => !Yii::$app->user->identity->isStudent(),
+                ],
+                [
+                    'label' => '<span class="glyphicon glyphicon-save-file"></span> Files', 
+                    'url' => ['/file/index'],
+                    'visible' => !Yii::$app->user->identity->isStudent(),
+                ],
+                [
+                    'label' => '<span class="glyphicon glyphicon-off"></span> Logout (' . Yii::$app->user->identity->username . ')',
+                    'url' => ['/site/logout'],
+                    'linkOptions' => ['data-method' => 'post']
+                ],
+            ]
+        ]);
+    }
+    
     NavBar::end();
     ?>
 
