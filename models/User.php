@@ -164,6 +164,42 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
     
     /**
+     * Returns true if user is administrator
+     */
+    public function isAdministrator() 
+    {
+        if ($this->getRole() == "Administrator") {
+            return true;
+        }    
+        
+        return false;
+    }
+    
+    /**
+     * Returns true if user is administrator
+     */
+    public function isStudent() 
+    {
+        if ($this->getRole() == "Student") {
+            return true;
+        }    
+        
+        return false;
+    }
+    
+    /**
+     * Returns true if user is administrator
+     */
+    public function isTutor() 
+    {
+        if ($this->getRole() == "Tutor") {
+            return true;
+        }    
+        
+        return false;
+    }
+    
+    /**
      * @inheritdoc
      */
     public function getAuthKey()
