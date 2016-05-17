@@ -19,7 +19,7 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                
+
                 'class' => AccessControl::className(),
                 'only' => ['logout'],
                 'rules' => [
@@ -56,31 +56,36 @@ class SiteController extends Controller
     {
 
         $idGroup = '';
+        
+        if(!Yii::$app->user->isGuest){
+            
+            $idUser = Yii::$app->user->id;
+            
+            $idGroupAux = Assign::find()
+                ->where(['student_id' => $idUser])
+                ->asArray()
+                ->one();
 
-        $idUser = Yii::$app->user->id;
-        $idGroupAux = Assign::find()
-            ->where(['student_id' => $idUser])
-            ->asArray()
-            ->one();
+            $idGroupTutor = Group::find()
+                ->where(['tutor_id' => $idUser])
+                ->asArray()
+                ->one();
 
-        $idGroupTutor = Group::find()
-            ->where(['tutor_id' => $idUser])
-            ->asArray()
-            ->one();
+            if(!empty($idGroupTutor)){
+                $idGroup = $idGroupTutor['name'];
+                //echo json_encode($idGroup);
+            }else{
+                if(!empty($idGroupAux)){
+                    $nameGroup = Group::find()
+                        ->where(['id' => $idGroupAux['group_id']])
+                        ->asArray()
+                        ->one();
+                    $idGroup = $nameGroup['name'];
+                }
 
-        if(!empty($idGroupTutor)){
-            $idGroup = $idGroupTutor['name'];
-            //echo json_encode($idGroup);
-        }else{
-            if(!empty($idGroupAux)){
-                $nameGroup = Group::find()
-                    ->where(['id' => $idGroupAux['group_id']])
-                    ->asArray()
-                    ->one();
-                $idGroup = $nameGroup['name'];
-            }
-
+            }   
         }
+
         
 
 
@@ -129,7 +134,11 @@ class SiteController extends Controller
                 ->offset($intOff)
                 ->asArray()
                 ->all();
-            return $this->render('index',['mensajes'=> $mensajes,'grupo'=> $idGroup]);
+            
+            
+                return $this->render('index',['mensajes'=> $mensajes,'grupo'=> $idGroup]);
+
+            
         }
     //echo $idGroup;
 

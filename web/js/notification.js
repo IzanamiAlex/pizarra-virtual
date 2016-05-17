@@ -9,7 +9,7 @@ $( document ).ready(function() {
 
         var message = JSON.parse(data);
 
-        $( "#notifications" ).prepend( "<p><strong>" + message.name + "</strong>: " + message.message + "</p>" );
+        $( "#notifications" ).append( "<p><strong>" + message.name + "</strong>: " + message.message + "</p>" );
 
     });
 
