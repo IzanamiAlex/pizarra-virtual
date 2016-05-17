@@ -5,17 +5,11 @@ var redis = require('redis');
 var mysql      = require('mysql');
 
 
-
-
-
-
 server.listen(8890);
 
-
-
-
-
 io.on('connection', function (socket) {
+
+    console.log("new client connected");
 
     var redisClient = redis.createClient();
 
@@ -28,7 +22,7 @@ io.on('connection', function (socket) {
 
 
 
-    console.log("new client connected");
+    
     connection.connect();
     connection.query('SELECT * FROM `group` ', function(err, rows, fields) {
         if (err) throw err;
@@ -41,10 +35,7 @@ io.on('connection', function (socket) {
         //console.log('The solution is: ', rows[0].name);
     });
 
-
-
-
-
+    connection.end();
     
     
     redisClient.on("message", function(channel, message) {
@@ -67,7 +58,7 @@ io.on('connection', function (socket) {
 
 
     socket.on('disconnect', function() {
-        connection.end();
+
         redisClient.quit();
     });
 
