@@ -34,7 +34,7 @@ class UserController extends Controller
                     [
                         'allow' => true,
                         'actions' => ['create', 'update'],
-                        'roles' => ['Administrator'],
+                        'roles' => ['Administrator', 'Tutor'],
                     ],
                     [
 						'allow' => true,

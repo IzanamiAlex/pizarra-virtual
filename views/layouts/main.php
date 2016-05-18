@@ -63,8 +63,7 @@ AppAsset::register($this);
                 ],
                 [
                     'label' => '<span class="glyphicon glyphicon-save-file"></span> Files', 
-                    'url' => ['/file/index'],
-                    'visible' => !Yii::$app->user->identity->isStudent(),
+                    'url' => ['/file/index']
                 ],
                 [
                     'label' => '<span class="glyphicon glyphicon-off"></span> Logout (' . Yii::$app->user->identity->username . ')',
