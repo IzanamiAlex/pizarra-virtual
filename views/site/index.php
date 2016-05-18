@@ -49,9 +49,12 @@ $this->registerJs($js, \yii\web\View::POS_READY)
                     <?php
                     
                     if(!empty($mensajes)){
-                        for($i=4;$i>=0;$i--){
+                        //for($i=4;$i>=0;$i--){
 
-                            echo "<p><strong>".$mensajes[$i]['username']."</strong>: ".$mensajes[$i]['message']."</p>";
+                          //  echo "<p><strong>".$mensajes[$i]['username']."</strong>: ".$mensajes[$i]['message']."</p>";
+                        //}
+                        foreach($mensajes as $mensaje){
+                            echo "<p><strong>".$mensaje['username']."</strong>: ".$mensaje['message']."</p>";
                         }
                     }else{
                         echo "<p><strong>INICIA SESIÓN PARA VER LOS MENSAJES DEL GRUPO ASIGNADO</strong></p>";
