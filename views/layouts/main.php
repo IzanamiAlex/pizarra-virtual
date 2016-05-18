@@ -20,6 +20,12 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/joint.css">
+	<script src="<?php echo Yii::app()->request->baseUrl; ?>/js/jquery.min.js"></script>
+    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/lodash.min.js"></script>
+    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/backbone-min.js"></script>
+    <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/joint.js"></script>
 </head>
 <body>
 <?php $this->beginBody() ?>
